@@ -1,0 +1,42 @@
+{% extends 'base.html' %} 
+{% block content %}
+<main class="hero">
+    
+    {% if session.get('role') in ['admin', 'nhanvien'] %}
+        <h1>Chào mừng đến với Hệ thống quản lý bay <span style="color: #00e5ff;">PCSĐ</span></h1>
+        <p>
+            Khu vực giám sát, vận hành và quản lý dữ liệu hàng không.
+        </p>
+        {% elif session.get('role') == 'khachhang' %}
+        <h2 style="color: #00e5ff; font-size: 24px; margin-bottom: 10px; font-weight: 600;">Chào mừng {{ session.get('hoTen') }} đã quay trở lại!</h2>
+        <h1>Cùng Nhau Bay Xa Hơn Với <span style="color: #00e5ff;">PCSĐ</span></h1>
+        <p>
+            Hệ thống đặt vé máy bay trực tuyến an toàn, nhanh chóng và tối ưu chi phí cho mọi hành trình.
+        </p>
+        <a href="/tra-cuu-ve" class="btn-cta">Đặt Vé Ngay</a>
+
+    {% else %}
+        <h1>Chào Mừng Đến Với <span style="color: #00e5ff;">PCSĐ</span></h1>
+        <p>
+            Hệ thống đặt vé máy bay trực tuyến an toàn, nhanh chóng và tối ưu chi phí cho mọi hành trình.
+        </p>
+        <a href="/login" class="btn-cta">Đặt Vé Ngay</a>
+    {% endif %}
+
+</main>
+
+<section class="features-container">
+    <div class="feature-card">
+        <h3>✈️ Đường Bay Đa Dạng</h3>
+        <p>Kết nối hơn 50 điểm đến trong và ngoài nước với lịch trình bay linh hoạt, đúng giờ.</p>
+    </div>
+    <div class="feature-card">
+        <h3>⚡ Đặt Vé 1 Phút</h3>
+        <p>Thao tác đơn giản, giữ chỗ tức thì, hỗ trợ thanh toán qua mọi ngân hàng.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🛡️ Hệ Thống Uy Tín</h3>
+        <p>Hỗ trợ hoàn đổi vé nhanh chóng, chăm sóc khách hàng 24/7 bất kể lễ Tết.</p>
+    </div>
+</section>
+{% endblock %}

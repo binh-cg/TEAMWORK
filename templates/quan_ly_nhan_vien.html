@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container" style="padding: 40px 20px; max-width: 900px; margin: 0 auto">
+    <h2 style="color: #ffffff; margin-bottom: 10px; font-size: 28px">🛡️ Quản Lý Đội Ngũ Nhân Viên Hệ Thống</h2>
+    <p style="color: #aaaaaa; margin-bottom: 30px">Phân hệ dành riêng cho Admin tối cao để giám sát nhân sự vận hành hệ thống bán vé.</p>
+
+    <div style="background-color: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 25px; color: #fff;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="border-bottom: 2px solid #333; color: #00e5ff; font-size: 14px; height: 40px;">
+                    <th>Mã NV</th>
+                    <th>Tài Khoản</th>
+                    <th>Họ và Tên Nhân Viên</th>
+                    <th>Email Công Việc</th>
+                    <th style="text-align: center;">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nv in nhan_vien_list %}
+                <tr style="border-bottom: 1px solid #2a2a2a; height: 50px; font-size: 14px;">
+                    <td style="font-family: monospace; color: #888;">{{ nv.id }}</td>
+                    <td><strong style="color: #fff;">{{ nv.taiKhoan }}</strong></td>
+                    <td>{{ nv.hoTen }}</td>
+                    <td style="color: #aaa;">{{ nv.email if nv.email else 'Chưa đăng ký email' }}</td>
+                    <td style="text-align: center;">
+                        <form action="/admin/xoa-nhan-vien/{{ nv.id }}" method="POST" onsubmit="return confirm('CẢNH BÁO TỐI CAO: Bạn sắp XÓA HOÀN TOÀN tài khoản nhân viên {{ nv.hoTen }} khỏi hệ thống. Hành động này không thể khôi phục. Tiếp tục?')">
+                            <button type="submit" style="background-color: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s;">
+                                🗑️ Sa Thải / Xóa
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: #666; padding: 40px 0;">Hiện tại chưa có tài khoản nhân viên nào trực thuộc quyền quản lý của bạn.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="/home" style="color: #00e5ff; text-decoration: none; font-weight: bold;">← Quay Lại Bàn Làm Việc Admin</a>
+    </div>
+</main>
+{% endblock %}
