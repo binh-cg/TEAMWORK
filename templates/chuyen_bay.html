@@ -1,0 +1,63 @@
+{% extends 'base.html' %} 
+{% block content %}
+<main class="container" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto">
+  <h2 style="color: #ffffff; margin-bottom: 10px; font-size: 28px">
+    {% if session.get('role') in ['admin', 'nhanvien'] %}
+    ✈️ Quản Lý Lịch Trình Chuyến Bay
+    {% else %}
+    ✈️ Tất Cả Chuyến Bay Hiện Có
+    {% endif %}
+  </h2>
+  
+  <p style="color: #aaaaaa; margin-bottom: 30px">
+    {% if session.get('role') in ['admin', 'nhanvien'] %}
+    Danh sách toàn bộ các đường bay đang được hệ thống khai thác và quản lý.
+    {% else %}
+    Danh sách các đường bay đang khai thác với giá vé ưu đãi nhất trong tháng.
+    {% endif %}
+  </p>
+
+  <div class="flight-list" style="display: flex; flex-direction: column; gap: 20px">
+    
+    {% for cb in chuyen_bays %}
+    <div class="flight-card" style="background-color: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 25px; display: flex; justify-content: space-between; align-items: center;">
+      <div class="flight-info">
+        <span style="color: #00e5ff; font-weight: bold; font-size: 14px">
+          SkyVẻ Airlines • {{ cb.maChuyenBay }} (Ghế trống: {{ cb.soGheTrong }})
+        </span>
+        <div style="display: flex; gap: 30px; margin-top: 10px; align-items: center;">
+          <div>
+            <strong style="font-size: 20px; color: #fff">{{ cb.ngayGioDi.strftime('%H:%M') }}</strong>
+            <p style="color: #aaa; margin: 0; font-size: 13px">{{ cb.sanBayDi }}</p>
+            <small style="color: #555;">{{ cb.ngayGioDi.strftime('%d/%m/%Y') }}</small>
+          </div>
+          <div style="color: #555">—— ➔ ——</div>
+          <div>
+            <strong style="font-size: 20px; color: #fff">{{ cb.ngayGioDen.strftime('%H:%M') }}</strong>
+            <p style="color: #aaa; margin: 0; font-size: 13px">{{ cb.sanBayDen }}</p>
+            <small style="color: #555;">{{ cb.ngayGioDen.strftime('%d/%m/%Y') }}</small>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flight-price" style="text-align: right">
+        <p style="color: #aaa; margin: 0 0 5px 0; font-size: 13px">Giá vé từ</p>
+        <strong style="color: #ff4d4d; font-size: 22px">{{ "{:,.0f}".format(cb.giaVe) }} đ</strong>
+        
+        {% if session.get('role') not in ['admin', 'nhanvien'] %}
+        <a href="{% if session.get('user_id') %}/dat-ve?id={{ cb.maChuyenBay }}{% else %}/login{% endif %}" style="text-decoration: none; display: block; margin-top: 10px; padding: 8px 20px; background-color: #00e5ff; color: #121212; border-radius: 6px; font-weight: bold; text-align: center;">
+          Chọn Vé
+        </a>  
+        {% endif %}
+        
+      </div>
+    </div>
+    {% else %}
+    <div style="text-align: center; color: #aaa; padding: 30px; background: #1a1a1a; border-radius: 8px;">
+        Hiện chưa có chuyến bay nào được nạp dữ liệu.
+    </div>
+    {% endfor %}
+
+  </div>
+</main>
+{% endblock %}
