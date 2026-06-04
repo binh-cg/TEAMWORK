@@ -1,0 +1,37 @@
+{% extends 'base.html' %} 
+{% block content %}
+<main class="hero">
+    <h1>Bay đến mọi nơi, <span style="color: #00e5ff;">dễ dàng</span> hơn bao giờ hết</h1>
+    <p>Tìm kiếm và đặt vé máy bay giá tốt nhất cho mọi hành trình của bạn</p>
+</main>
+
+<section class="search-container">
+    <form class="search-form" action="/search" method="GET">
+        <div class="form-group">
+            <label>ĐIỂM ĐI</label>
+            <input type="text" name="sanBayDi" placeholder="Thành phố hoặc Sân bay" required />
+        </div>
+
+        <div class="form-group-icon">
+            <button type="button" class="swap-btn">⇄</button>
+        </div>
+
+        <div class="form-group">
+            <label>ĐIỂM ĐẾN</label>
+            <input type="text" name="sanBayDen" placeholder="Thành phố hoặc Sân bay" required />
+        </div>
+
+        <div class="form-group">
+            <label>NGÀY ĐI</label>
+            <input type="date" name="ngayGioDi" required />
+        </div>
+
+        <div class="form-group">
+            <label>HÀNH KHÁCH</label>
+            <input type="text" placeholder="1 người lớn, Phổ thông" readonly />
+        </div>
+
+        <button type="submit" class="search-submit-btn">→</button>
+    </form>
+</section>
+{% endblock %}

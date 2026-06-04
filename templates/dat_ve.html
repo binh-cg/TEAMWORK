@@ -1,0 +1,58 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="auth-container" style="min-height: 90vh; padding: 20px;">
+    <div class="auth-box" style="max-width: 600px; text-align: left;">
+        <h2 style="text-align: center; font-size: 26px; margin-bottom: 5px;">Thông Tin Đặt Vé</h2>
+        <p style="text-align: center; margin-bottom: 25px;">Vui lòng kiểm tra lộ trình và nhập thông tin chính xác</p>
+
+        <div style="background-color: var(--bg-input); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+            <span style="color: var(--accent-color); font-weight: bold; font-size: 13px; display: block; margin-bottom: 8px;">
+                CHUYẾN BAY: SkyVẻ Airlines • {{ cb.maChuyenBay }}
+            </span>
+            <div style="display: flex; justify-content: space-between; align-items: center; color: #fff;">
+                <div>
+                    <strong style="font-size: 18px;">{{ cb.ngayGioDi.strftime('%H:%M') }}</strong>
+                    <div style="color: var(--text-sub); font-size: 13px;">{{ cb.sanBayDi }}</div>
+                </div>
+                <div style="color: var(--text-sub); font-size: 12px;">➔</div>
+                <div>
+                    <strong style="font-size: 18px;">{{ cb.ngayGioDen.strftime('%H:%M') }}</strong>
+                    <div style="color: var(--text-sub); font-size: 13px;">{{ cb.sanBayDen }}</div>
+                </div>
+                <div style="text-align: right;">
+                    <span style="color: #ff4d4d; font-size: 18px; font-weight: bold;">{{ "{:,.0f}".format(cb.giaVe) }} đ</span>
+                    <div style="color: #666; font-size: 11px;">Giá vé base</div>
+                </div>
+            </div>
+        </div>
+
+        <form action="/dat-ve?id={{ cb.maChuyenBay }}" method="POST">
+            <div class="form-group">
+                <label>HỌ VÀ TÊN HÀNH KHÁCH</label>
+                <input type="text" name="hoTen" placeholder="Ví dụ: NGUYEN MINH QUANG" required />
+            </div>
+
+            <div class="form-group">
+                <label>SỐ CCCD / PASSPORT</label>
+                <input type="text" name="cccd" placeholder="Nhập số căn cước công dân..." required />
+            </div>
+
+            <div class="form-group">
+                <label>SỐ ĐIỆN THOẠI LIÊN HỆ</label>
+                <input type="text" name="soDienThoai" placeholder="Nhập số điện thoại..." required />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label>PHƯƠNG THỨC THANH TOÁN</label>
+                <select name="phuongThucThanhToan" style="width: 100%; padding: 14px 16px; background-color: #333333; border: 1px solid #444444; border-radius: 8px; color: #ffffff; font-size: 15px; outline: none;" required>
+                    <option value="Chuyển khoản QR">Chuyển khoản mã ngân hàng QR</option>
+                    <option value="Thẻ nội địa">Thẻ ATM nội địa</option>
+                    <option value="Ví điện tử">Ví điện tử (Momo/ZaloPay)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit" style="margin-top: 0;">Xác Nhận Đặt Vé Ngay</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PCSĐ - Hệ thống đặt vé máy bay trực tuyến</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="logo">PCS<span>Đ</span></a>
+
+        <ul class="nav-links">
+            <li><a href="/" class="active">Trang chủ</a></li>
+            <li><a href="/chuyen-bay">Chuyến bay</a></li>
+            <li><a href="/tra-cuu-ve">Tra cứu chuyến bay</a></li>
+            <li><a href="#">Liên hệ</a></li>
+        </ul>
+
+        <div class="auth-buttons">
+            {% if session.get('user_id') %}
+                <span style="color: #fff; margin-right: 10px;">Xin chào, <b>{{ session.get('hoTen') }}</b></span>
+                <a href="/logout" class="btn-logout" style="background-color: #dc3545; color: white; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-weight: bold;">Đăng xuất</a>
+            {% else %}
+                <a href="/login" class="btn-login">Đăng nhập</a>
+                <a href="/register" class="btn-register" style="margin-left: 10px;">Đăng ký</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% block content %} 
+    {% endblock %}
+
+</body>
+</html>
