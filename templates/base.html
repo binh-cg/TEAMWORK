@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PCSĐ - Hệ thống đặt vé máy bay trực tuyến</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <style>
+        /* =========================================================
+           1. ĐỒNG BỘ CƠ BẢN & DIỆT TẬN GỐC VIỀN XANH LÁ (FOCUS RING)
+           ========================================================= */
+        .nav-links li a { color: #ffffff !important; text-decoration: none; transition: color 0.3s ease; }
+        .nav-links li a:hover, .nav-links li a.active { color: #00e5ff !important; }
+        .logo { color: #00e5ff !important; text-decoration: none; }
+        .logo span { color: #00e5ff !important; }
+
+        /* FIX TRIỆT ĐỂ: Xóa sạch viền xanh lá ngoài của trình duyệt, chỉ giữ khung ô trong chuyển màu xanh ngọc */
+        input:focus, select:focus, textarea:focus, button:focus {
+            outline: none !important;          /* Diệt viền xanh lá của Chrome/Safari */
+            outline-offset: 0 !important;
+            box-shadow: none !important;        /* Diệt bóng nhòe bên ngoài */
+            border: 1px solid #00e5ff !important; /* Giữ viền trong chuyển xanh PCSĐ gọn gàng */
+            transition: border-color 0.2s ease;
+        }
+
+        /* Căn chỉnh khối điều hướng trên Desktop */
+        .nav-menu-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Thẳng hàng 2 nút Đăng nhập và Đăng ký */
+        .btn-login {
+            color: #fff !important; text-decoration: none; font-weight: bold;
+            display: inline-flex; align-items: center; justify-content: center;
+            height: 38px; padding: 0 15px; box-sizing: border-box;
+        }
+        .btn-register-custom { 
+            border: 1px solid #00e5ff !important; color: #00e5ff !important; background: transparent !important; 
+            border-radius: 4px; text-decoration: none; font-weight: bold; transition: 0.3s; 
+            display: inline-flex; align-items: center; justify-content: center;
+            height: 38px; padding: 0 15px; box-sizing: border-box;
+        }
+        .btn-register-custom:hover { background: #00e5ff !important; color: #121212 !important; }
+
+        /* Nút mũi tên trang tra cứu chuyển thành màu xanh đồng bộ */
+        .swap-btn { background-color: #2a2a2a !important; color: #ffffff !important; border: 1px solid #444 !important; }
+        .search-submit-btn { background-color: #00e5ff !important; color: #121212 !important; border: none !important; font-weight: bold; font-size: 18px; }
+
+        /* Mặc định ẩn nút bấm mobile trên PC */
+        .mobile-menu-btn { display: none; }
+
+        /* =========================================================
+           2. REWRITE GIAO DIỆN ĐIỆN THOẠI (KHÓA CHẶT KHÔNG CHO LÒI NÚT)
+           ========================================================= */
+        @media screen and (max-width: 768px) {
+            .navbar { flex-direction: column !important; align-items: flex-start !important; padding: 15px !important; }
+            
+            /* Thanh tác vụ kích hoạt menu thả */
+            .mobile-menu-btn { 
+                display: block !important; width: 100% !important; text-align: center !important; background: #1a1a1a !important; 
+                border: 1px solid #333 !important; color: #00e5ff !important; padding: 10px !important; margin-top: 15px !important; 
+                border-radius: 8px !important; font-weight: bold !important; cursor: pointer !important;
+            }
+            
+            /* ẨN TOÀN BỘ WRAPPER (Bao gồm cả link và nút login/logout) */
+            .nav-menu-wrapper { 
+                display: none !important; 
+                flex-direction: column !important; 
+                width: 100% !important; 
+                gap: 20px !important;
+                margin: 0 !important;
+                padding-top: 15px !important;
+            }
+            
+            /* Khi bấm nút thì bung cả cụm ra một lúc */
+            .nav-menu-wrapper.show-menu { display: flex !important; }
+
+            /* Định dạng hàng dọc cho danh mục link */
+            .nav-links { 
+                display: flex !important; flex-direction: column !important; 
+                gap: 15px !important; width: 100% !important; padding: 0 !important; margin: 0 !important; text-align: center !important; 
+            }
+            
+            /* Định dạng hàng dọc cho cụm tài khoản/đăng xuất */
+            .auth-buttons { 
+                display: flex !important; flex-direction: column !important; 
+                gap: 12px !important; width: 100% !important; align-items: center !important; padding: 0 !important; margin: 0 !important;
+            }
+            .auth-buttons a, .auth-buttons span { margin: 0 !important; width: 100% !important; text-align: center !important; box-sizing: border-box !important; }
+
+            /* Ép các phần mô tả trang chủ và form kết quả thành hàng dọc */
+            .features-container { display: flex !important; flex-direction: column !important; gap: 20px !important; align-items: center !important; }
+            .feature-card { width: 100% !important; margin: 0 !important; box-sizing: border-box !important; }
+            
+            .search-form { flex-direction: column !important; padding: 20px !important; border-radius: 12px !important; }
+            .form-group { width: 100% !important; margin-bottom: 15px !important; }
+            .form-group-icon { transform: rotate(90deg) !important; margin: 5px 0 !important; }
+            .search-submit-btn { width: 100% !important; margin-top: 10px !important; border-radius: 8px !important; }
+
+            .flight-card, div[style*="justify-content: space-between"] { flex-direction: column !important; align-items: flex-start !important; gap: 15px !important; }
+            .flight-price, div[style*="text-align: right"] { text-align: left !important; width: 100% !important; border-top: 1px dashed #444 !important; padding-top: 15px !important; margin-top: 5px !important; }
+            div[style*="display: flex; gap: 30px;"] { gap: 10px !important; flex-wrap: wrap !important; }
+            
+            div[style*="grid-template-columns: repeat"], div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+            table { display: block !important; overflow-x: auto !important; white-space: nowrap !important; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-app-content">
+        <nav class="navbar">
+            <a href="/" class="logo">PCS<span>Đ</span></a>
+            
+            <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                Danh mục điều hướng <span id="menu-arrow">▼</span>
+            </div>
+
+            <div class="nav-menu-wrapper" id="mobile-menu-wrapper">
+                <ul class="nav-links">
+                    <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Trang chủ</a></li>
+                    <li><a href="/chuyen-bay" class="{% if request.path == '/chuyen-bay' %}active{% endif %}">{% if session.get('role') in ['admin', 'nhanvien'] %}Quản lý chuyến bay{% else %}Chuyến bay{% endif %}</a></li>
+                    
+                    {% if not session.get('role') or session.get('role') == 'khachhang' %}
+                    <li><a href="/tra-cuu-ve" class="{% if request.path == '/tra-cuu-ve' %}active{% endif %}">Tra cứu chuyến bay</a></li>
+                    {% endif %}
+                    
+                    {% if session.get('user_id') %}
+                        {% if session.get('role') == 'khachhang' %}
+                            <li><a href="/ve-cua-toi" class="{% if request.path == '/ve-cua-toi' %}active{% endif %}">Vé Của Tôi</a></li>
+                        {% endif %}
+                        {% if session.get('role') in ['admin', 'nhanvien'] %}
+                            <li><a href="/quan-ly/khach-hang" class="{% if request.path == '/quan-ly/khach-hang' %}active{% endif %}">Tra cứu & Hủy vé</a></li>
+                        {% endif %}
+                        {% if session.get('role') == 'admin' %}
+                            <li><a href="/admin/nhan-vien" class="{% if request.path == '/admin/nhan-vien' %}active{% endif %}">Quản lý nhân viên</a></li>
+                        {% endif %}
+                    {% endif %}
+                    
+                    <li><a href="{{ url_for('lien_he') }}" class="{% if request.path == '/lien-he' %}active{% endif %}">Liên hệ</a></li>
+                </ul>
+
+                <div class="auth-buttons">
+                    {% if session.get('user_id') %}
+                        <a href="/home" style="color: #fff !important; text-decoration: none; padding: 5px 0;">Xin chào, <b style="color: #00e5ff !important;">{{ session.get('hoTen') }}</b></a>
+                        <a href="/logout" class="btn-logout" style="background-color: #dc3545 !important; color: white !important; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-weight: bold; height: 38px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;">Đăng xuất</a>
+                    {% else %}
+                        <a href="/login" class="btn-login">Đăng nhập</a>
+                        <a href="/register" class="btn-register-custom">Đăng ký</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        {% block content %} 
+        {% endblock %}
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const wrapper = document.getElementById('mobile-menu-wrapper');
+            const arrow = document.getElementById('menu-arrow');
+            
+            if (wrapper.classList.contains('show-menu')) {
+                wrapper.classList.remove('show-menu');
+                arrow.innerHTML = '▼';
+            } else {
+                wrapper.classList.add('show-menu');
+                arrow.innerHTML = '▲';
+            }
+        }
+    </script>
+</body>
+</html>

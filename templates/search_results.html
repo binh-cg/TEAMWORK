@@ -1,0 +1,54 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div style="max-width: 1100px; margin: 40px auto; padding: 0 20px">
+    <h2 style="font-size: 24px; margin-bottom: 10px; color: #fff;">Kết quả tìm kiếm</h2>
+    <p style="color: var(--text-sub, #aaa); margin-bottom: 30px;">
+        Hiển thị các chuyến bay phù hợp với lộ trình của bạn
+    </p>
+
+    {% for cb in chuyen_bays %}
+    <div style="background-color: var(--bg-card, #1a1a1a); border: 1px solid var(--border-color, #2a2a2a); border-radius: 12px; padding: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        
+        <div style="display: flex; gap: 40px; align-items: center;">
+            <div>
+                <h3 style="font-size: 20px; color: var(--text-main, #fff); margin: 0 0 5px 0;">{{ cb.ngayGioDi.strftime('%H:%M') }}</h3>
+                <span style="color: var(--text-sub, #aaa); font-size: 14px;">{{ cb.sanBayDi }}</span>
+                <div style="color: #555; font-size: 12px;">{{ cb.ngayGioDi.strftime('%d/%m/%Y') }}</div>
+            </div>
+            
+            <div style="color: var(--accent-color, #00e5ff); font-size: 14px; text-align: center;">
+                <div>Khởi hành</div>
+                <div>———— ➔ ————</div>
+                <div style="color: var(--text-sub, #aaa); font-size: 12px;">Bay thẳng</div>
+            </div>
+
+            <div>
+                <h3 style="font-size: 20px; color: var(--text-main, #fff); margin: 0 0 5px 0;">{{ cb.ngayGioDen.strftime('%H:%M') }}</h3>
+                <span style="color: var(--text-sub, #aaa); font-size: 14px;">{{ cb.sanBayDen }}</span>
+                <div style="color: #555; font-size: 12px;">{{ cb.ngayGioDen.strftime('%d/%m/%Y') }}</div>
+            </div>
+        </div>
+
+        <div style="text-align: right;">
+            <div style="color: var(--accent-color, #ff4d4d); font-size: 22px; font-weight: 700; margin-bottom: 8px;">
+                {{ "{:,.0f}".format(cb.giaVe) }} đ
+            </div>
+            <p style="color: #666; margin: 0 0 5px 0; font-size: 12px;">Còn lại: {{ cb.soGheTrong }} ghế trống</p>
+            <a href="{% if session.get('user_id') %}/dat-ve?id={{ cb.maChuyenBay }}{% else %}/login{% endif %}" class="btn-register" style="padding: 8px 25px; text-decoration: none; display: inline-block; background-color: #00e5ff; color: #000; font-weight: bold; border-radius: 6px;">Chọn vé</a>
+        </div>
+
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 60px 20px; background: #1a1a1a; border-radius: 12px; border: 1px solid #2a2a2a;">
+        <h3 style="color: #ff4d4d; font-size: 24px; margin: 0;">Không có chuyến</h3>
+        <p style="color: var(--text-sub, #aaa); margin-top: 10px; font-size: 14px;">
+            Hệ thống không tìm thấy lịch bay nào phù hợp vào ngày bạn chọn. Vui lòng thử ngày khác!
+        </p>
+    </div>
+    {% endfor %}
+
+    <p style="text-align: center; color: var(--text-sub, #555); margin-top: 30px; font-size: 14px;">
+        Hết danh sách chuyến bay phù hợp.
+    </p>
+</div>
+{% endblock %}
