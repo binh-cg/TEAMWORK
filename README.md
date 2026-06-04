@@ -1,6 +1,4 @@
 # PHI CÔNG SIÊU ĐẲNG 🛫🛫🛫
-
-Thành viên:
 Chu Gia Bình (MSV: 25112018) - Trưởng nhóm
 
 Nguyễn Minh Quang (MSV: 25112102)
@@ -10,13 +8,13 @@ Nguyễn Quý Hiển (MSV: 25112042)
 Lại Minh Vũ (MSV: 25112124)
 
 
-# MÔ TẢ 📃
+# MÔ TẢ 📃 ***Link web sẽ được mở vào ngày thuyết trình***
+https://scarring-husked-dollop.ngrok-free.dev/
+
 Đây là dự án web của nhóm Phi công siêu đẳng,
 
 Nhóm chúng tôi làm về hệ thống bán vé máy bay trực tuyến, để giải quyết nhu cầu sử dụng máy bay của xã hội ngày càng tăng cao.
-
 Chúng tôi mong muốn tạo ra một hệ thống bán vé trực tuyến tập trung vào sự tiện lợi và đơn giản trong thao tác với hệ thống. 
-
 Hệ thống được thiết kế để hướng đến đại chúng, dễ dàng thao tác cho mọi đối tượng sử dụng.
 
 # ✨ Các tính năng chính:
